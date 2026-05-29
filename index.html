@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>News Icon</title>
+<style>
+body {
+    margin: 0;
+    padding: 0;
+    background: transparent;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+}
+
+a img {
+    width: clamp(4rem, 15vw, 8rem);
+    height: auto;
+    transition: transform 0.3s ease, filter 0.3s ease;
+    cursor: pointer;
+}
+
+a img:hover {
+    transform: scale(1.2);
+    filter: brightness(1.5) drop-shadow(0 0 10px orange);
+}
+</style>
+</head>
+<body>
+
+<a href="https://sites.google.com/view/sunnysschaetze/home/sunnys-kleines-hilfezentrum" target="_blank">
+    <img src="https://cdn-icons-png.flaticon.com/512/5074/5074458.png" alt="Beratungsstelle Icon">
+</a>
+
+</body>
+</html>
