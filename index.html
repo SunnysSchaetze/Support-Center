@@ -6,48 +6,67 @@
 <title>News Icon</title>
 
 <style>
+
+html,
+body {
+    width: 100%;
+    height: 100%;
+}
+
 body {
     margin: 0;
     padding: 0;
+
     background: transparent;
+
     display: flex;
     justify-content: center;
     align-items: center;
-    min-height: 100vh;
+
     overflow: hidden;
 }
 
-/* =========================================================
-   NEWS ICON
-   ========================================================= */
+a {
+    display: flex;
+    justify-content: center;
+    align-items: center;
 
-a img {
-    width: clamp(4rem, 15vw, 8rem);
-    height: auto;
+    text-decoration: none;
+
     transition: transform 0.3s ease, filter 0.3s ease;
-    cursor: pointer;
-    user-select: none;
-    -webkit-user-drag: none;
 }
 
-a img:hover {
+a:hover img {
     transform: scale(1.2);
+
     filter:
         brightness(1.5)
         drop-shadow(0 0 10px orange);
 }
 
+img {
+    width: clamp(4rem, 15vw, 8rem);
+    height: auto;
+
+    cursor: pointer;
+
+    user-select: none;
+    -webkit-user-drag: none;
+}
+
 
 /* =========================================================
-   CURSOR-GLITZER
+   HAUPT-GLITZER
    ========================================================= */
 
 .glitzer {
     position: fixed;
+
     left: 0;
     top: 0;
 
     pointer-events: none;
+
     z-index: 99999;
 
     width: var(--size);
@@ -83,7 +102,9 @@ a img:hover {
 }
 
 
-/* Lichtstrahlen */
+/* =========================================================
+   LICHTSTRAHLEN
+   ========================================================= */
 
 .glitzer::before,
 .glitzer::after {
@@ -101,7 +122,7 @@ a img:hover {
 }
 
 
-/* Horizontal */
+/* HORIZONTAL */
 
 .glitzer::before {
     width: 185%;
@@ -120,11 +141,12 @@ a img:hover {
         );
 
     border-radius: 999px;
+
     filter: blur(.3px);
 }
 
 
-/* Vertikal */
+/* VERTIKAL */
 
 .glitzer::after {
     width: 14%;
@@ -143,11 +165,14 @@ a img:hover {
         );
 
     border-radius: 999px;
+
     filter: blur(.3px);
 }
 
 
-/* Größerer Stern */
+/* =========================================================
+   GRÖSSERER FUNKELSTERN
+   ========================================================= */
 
 .glitzer.long {
     filter:
@@ -169,6 +194,7 @@ a img:hover {
     top: 0;
 
     pointer-events: none;
+
     z-index: 99998;
 
     width: var(--staub-size);
@@ -205,7 +231,7 @@ a img:hover {
 
 
 /* =========================================================
-   CURSOR-SCHWEIF ANIMATION
+   CURSOR-SPUR
    ========================================================= */
 
 @keyframes cursorTrail {
@@ -215,7 +241,10 @@ a img:hover {
 
         transform:
             translate(-50%, -50%)
-            translate(var(--sx), var(--sy))
+            translate(
+                var(--sx),
+                var(--sy)
+            )
             scale(.18);
     }
 
@@ -224,7 +253,10 @@ a img:hover {
 
         transform:
             translate(-50%, -50%)
-            translate(var(--sx), var(--sy))
+            translate(
+                var(--sx),
+                var(--sy)
+            )
             scale(1);
     }
 
@@ -233,7 +265,10 @@ a img:hover {
 
         transform:
             translate(-50%, -50%)
-            translate(var(--mx), var(--my))
+            translate(
+                var(--mx),
+                var(--my)
+            )
             scale(.9);
     }
 
@@ -242,7 +277,10 @@ a img:hover {
 
         transform:
             translate(-50%, -50%)
-            translate(var(--ex), var(--ey))
+            translate(
+                var(--ex),
+                var(--ey)
+            )
             scale(.55);
     }
 
@@ -251,14 +289,17 @@ a img:hover {
 
         transform:
             translate(-50%, -50%)
-            translate(var(--ex), var(--ey))
+            translate(
+                var(--ex),
+                var(--ey)
+            )
             scale(.08);
     }
 }
 
 
 /* =========================================================
-   STAUB-ANIMATION
+   STAUB-BEWEGUNG
    ========================================================= */
 
 @keyframes staubTrail {
@@ -301,14 +342,17 @@ a img:hover {
 
         transform:
             translate(-50%, -50%)
-            translate(var(--dx), var(--dy))
+            translate(
+                var(--dx),
+                var(--dy)
+            )
             scale(.2);
     }
 }
 
 
 /* =========================================================
-   KLICK-BLITZ
+   KLICK-FLASH
    ========================================================= */
 
 .klick-flash {
@@ -352,6 +396,10 @@ a img:hover {
 }
 
 
+/* =========================================================
+   KLICK-FLASH ANIMATION
+   ========================================================= */
+
 @keyframes flash {
 
     0% {
@@ -387,19 +435,6 @@ a img:hover {
     }
 }
 
-
-/* =========================================================
-   REDUZIERTE ANIMATION
-   ========================================================= */
-
-@media (prefers-reduced-motion: reduce) {
-
-    .glitzer,
-    .staub {
-        animation-duration: .35s;
-    }
-}
-
 </style>
 </head>
 
@@ -409,24 +444,16 @@ a img:hover {
     <img
         src="https://cdn-icons-png.flaticon.com/512/5074/5074458.png"
         alt="Beratungsstelle Icon"
-        draggable="false"
     >
 </a>
 
 
 <script>
 
-/* =========================================================
-   EINSTELLUNGEN
-   ========================================================= */
-
 let letzteX = 0;
 let letzteY = 0;
-
 let letzterSpawn = 0;
-
 let aktiveGlitzer = 0;
-
 const MAX_GLITZER = 180;
 
 
@@ -434,46 +461,80 @@ const MAX_GLITZER = 180;
    MAUSBEWEGUNG
    ========================================================= */
 
-document.addEventListener("mousemove", function(event) {
+document.addEventListener(
+    "mousemove",
+    function(event) {
 
-    erzeugeBewegungsEffekt(
-        event.clientX,
-        event.clientY
-    );
+        erzeugeBewegungsEffekt(
+            event.clientX,
+            event.clientY
+        );
 
-});
+    }
+);
 
 
 /* =========================================================
    TOUCH-BEWEGUNG
    ========================================================= */
 
-document.addEventListener("touchmove", function(event) {
+document.addEventListener(
+    "touchmove",
+    function(event) {
 
-    if (!event.touches || !event.touches.length) {
-        return;
+        if (
+            !event.touches ||
+            !event.touches.length
+        ) {
+            return;
+        }
+
+        const touch =
+            event.touches[0];
+
+        erzeugeBewegungsEffekt(
+            touch.clientX,
+            touch.clientY
+        );
+
+    },
+    {
+        passive: true
     }
+);
 
-    const touch = event.touches[0];
 
-    erzeugeBewegungsEffekt(
-        touch.clientX,
-        touch.clientY
-    );
+/* =========================================================
+   KLICK
+   ========================================================= */
 
-}, {
-    passive: true
-});
+document.addEventListener(
+    "click",
+    function(event) {
+
+        klickEffekt(
+            event.clientX,
+            event.clientY
+        );
+
+    }
+);
 
 
 /* =========================================================
    BEWEGUNGS-EFFEKT
    ========================================================= */
 
-function erzeugeBewegungsEffekt(x, y) {
+function erzeugeBewegungsEffekt(
+    x,
+    y
+) {
 
-    const dx = x - letzteX;
-    const dy = y - letzteY;
+    const dx =
+        x - letzteX;
+
+    const dy =
+        y - letzteY;
 
     const entfernung =
         Math.sqrt(
@@ -481,26 +542,20 @@ function erzeugeBewegungsEffekt(x, y) {
             dy * dy
         );
 
-    const jetzt = performance.now();
+    const jetzt =
+        performance.now();
 
 
-    if (entfernung < 2) {
-        letzteX = x;
-        letzteY = y;
+    if (
+        entfernung < 2
+    ) {
         return;
     }
 
 
-    if (jetzt - letzterSpawn < 12) {
-
-        letzteX = x;
-        letzteY = y;
-
-        return;
-    }
-
-
-    if (aktiveGlitzer >= MAX_GLITZER) {
+    if (
+        jetzt - letzterSpawn < 12
+    ) {
 
         letzteX = x;
         letzteY = y;
@@ -509,26 +564,34 @@ function erzeugeBewegungsEffekt(x, y) {
     }
 
 
-    /* Bewegungsrichtung */
+    if (
+        aktiveGlitzer >= MAX_GLITZER
+    ) {
+
+        letzteX = x;
+        letzteY = y;
+
+        return;
+    }
+
 
     let nx = 0;
     let ny = 0;
 
+
     if (entfernung > 0) {
 
-        nx = dx / entfernung;
-        ny = dy / entfernung;
+        nx =
+            dx / entfernung;
 
+        ny =
+            dy / entfernung;
     }
 
-
-    /* Effekt startet exakt am Cursor */
 
     const trailX = x;
     const trailY = y;
 
-
-    /* Hauptstern */
 
     createGlitzer(
         trailX,
@@ -539,10 +602,15 @@ function erzeugeBewegungsEffekt(x, y) {
     );
 
 
-    /* Staub */
+    createStaub(
+        trailX,
+        trailY
+    );
 
-    createStaub(trailX, trailY);
-    createStaub(trailX, trailY);
+    createStaub(
+        trailX,
+        trailY
+    );
 
     createStaub(
         trailX - nx * 6,
@@ -565,9 +633,9 @@ function erzeugeBewegungsEffekt(x, y) {
     );
 
 
-    /* Größerer Stern */
-
-    if (Math.random() > .68) {
+    if (
+        Math.random() > .68
+    ) {
 
         createGlitzer(
             trailX,
@@ -576,13 +644,12 @@ function erzeugeBewegungsEffekt(x, y) {
             nx,
             ny
         );
-
     }
 
 
-    /* Bei schneller Bewegung mehr Staub */
-
-    if (entfernung > 15) {
+    if (
+        entfernung > 15
+    ) {
 
         createStaub(
             trailX,
@@ -599,8 +666,9 @@ function erzeugeBewegungsEffekt(x, y) {
             trailY - ny * 30
         );
 
-
-        if (entfernung > 28) {
+        if (
+            entfernung > 28
+        ) {
 
             createStaub(
                 trailX - nx * 45,
@@ -611,16 +679,18 @@ function erzeugeBewegungsEffekt(x, y) {
                 trailX - nx * 60,
                 trailY - ny * 60
             );
-
         }
-
     }
 
 
-    letzterSpawn = jetzt;
+    letzterSpawn =
+        jetzt;
 
-    letzteX = x;
-    letzteY = y;
+    letzteX =
+        x;
+
+    letzteY =
+        y;
 }
 
 
@@ -636,7 +706,9 @@ function createGlitzer(
     ny = 0
 ) {
 
-    if (aktiveGlitzer >= MAX_GLITZER) {
+    if (
+        aktiveGlitzer >= MAX_GLITZER
+    ) {
         return;
     }
 
@@ -644,16 +716,15 @@ function createGlitzer(
     const glitzer =
         document.createElement("div");
 
-
     glitzer.className =
         grosser
         ? "glitzer long"
         : "glitzer";
 
 
-    /* Farbe */
-
-    if (Math.random() < .5) {
+    if (
+        Math.random() < .5
+    ) {
 
         glitzer.style.setProperty(
             "--color",
@@ -666,17 +737,13 @@ function createGlitzer(
             "--color",
             "#ffe000"
         );
-
     }
 
-
-    /* Größe */
 
     const size =
         grosser
         ? 10 + Math.random() * 5
         : 4 + Math.random() * 4;
-
 
     glitzer.style.setProperty(
         "--size",
@@ -684,19 +751,21 @@ function createGlitzer(
     );
 
 
-    /* Seitliche Bewegung */
-
     const seitlich =
         (Math.random() - .5) * 5;
 
-    const px = -ny;
-    const py = nx;
+    const px =
+        -ny;
 
-    const sx = px * seitlich;
-    const sy = py * seitlich;
+    const py =
+        nx;
 
+    const sx =
+        px * seitlich;
 
-    /* Mittlere Position */
+    const sy =
+        py * seitlich;
+
 
     const mx =
         sx -
@@ -712,8 +781,6 @@ function createGlitzer(
             Math.random() * 16
         );
 
-
-    /* Endposition */
 
     const ex =
         mx -
@@ -763,12 +830,9 @@ function createGlitzer(
     );
 
 
-    /* Lebensdauer */
-
     const duration =
         900 +
         Math.random() * 550;
-
 
     glitzer.style.setProperty(
         "--duration",
@@ -791,13 +855,16 @@ function createGlitzer(
     );
 
 
-    setTimeout(function() {
+    setTimeout(
+        function() {
 
-        glitzer.remove();
+            glitzer.remove();
 
-        aktiveGlitzer--;
+            aktiveGlitzer--;
 
-    }, duration + 60);
+        },
+        duration + 60
+    );
 }
 
 
@@ -805,9 +872,14 @@ function createGlitzer(
    GLITZERSTAUB
    ========================================================= */
 
-function createStaub(x, y) {
+function createStaub(
+    x,
+    y
+) {
 
-    if (aktiveGlitzer >= MAX_GLITZER) {
+    if (
+        aktiveGlitzer >= MAX_GLITZER
+    ) {
         return;
     }
 
@@ -815,13 +887,13 @@ function createStaub(x, y) {
     const staub =
         document.createElement("div");
 
+    staub.className =
+        "staub";
 
-    staub.className = "staub";
 
-
-    /* Farbe */
-
-    if (Math.random() < .5) {
+    if (
+        Math.random() < .5
+    ) {
 
         staub.style.setProperty(
             "--color",
@@ -834,16 +906,12 @@ function createStaub(x, y) {
             "--color",
             "#ffe000"
         );
-
     }
 
-
-    /* Größe */
 
     const size =
         1.5 +
         Math.random() * 2.5;
-
 
     staub.style.setProperty(
         "--staub-size",
@@ -851,16 +919,12 @@ function createStaub(x, y) {
     );
 
 
-    /* Startposition */
-
     const startX =
         (Math.random() - .5) * 20;
 
     const startY =
         (Math.random() - .5) * 20;
 
-
-    /* Bewegung */
 
     const dx =
         (Math.random() - .5) * 48;
@@ -887,12 +951,9 @@ function createStaub(x, y) {
     );
 
 
-    /* Lebensdauer */
-
     const duration =
         650 +
         Math.random() * 550;
-
 
     staub.style.setProperty(
         "--duration",
@@ -908,13 +969,16 @@ function createStaub(x, y) {
     );
 
 
-    setTimeout(function() {
+    setTimeout(
+        function() {
 
-        staub.remove();
+            staub.remove();
 
-        aktiveGlitzer--;
+            aktiveGlitzer--;
 
-    }, duration + 60);
+        },
+        duration + 60
+    );
 }
 
 
@@ -922,26 +986,10 @@ function createStaub(x, y) {
    KLICK-EFFEKT
    ========================================================= */
 
-document.querySelector("a").addEventListener(
-    "click",
-    function(event) {
-
-        klickEffekt(
-            event.clientX,
-            event.clientY
-        );
-
-    }
-);
-
-
-/* =========================================================
-   KLICK-EFFEKT / EXPLOSION
-   ========================================================= */
-
-function klickEffekt(x, y) {
-
-    /* Zentraler Blitz */
+function klickEffekt(
+    x,
+    y
+) {
 
     const flash =
         document.createElement("div");
@@ -960,36 +1008,41 @@ function klickEffekt(x, y) {
     );
 
 
-    /* 18 Explosionssterne */
-
-    for (let i = 0; i < 18; i++) {
+    for (
+        let i = 0;
+        i < 18;
+        i++
+    ) {
 
         createExplosionsGlitzer(
             x,
             y,
             Math.random() > .65
         );
-
     }
 
 
-    /* 18 Staubpartikel */
-
-    for (let i = 0; i < 18; i++) {
+    for (
+        let i = 0;
+        i < 18;
+        i++
+    ) {
 
         createExplosionStaub(
             x,
             y
         );
-
     }
 
 
-    setTimeout(function() {
+    setTimeout(
+        function() {
 
-        flash.remove();
+            flash.remove();
 
-    }, 500);
+        },
+        500
+    );
 }
 
 
@@ -1003,7 +1056,9 @@ function createExplosionsGlitzer(
     grosser = false
 ) {
 
-    if (aktiveGlitzer >= MAX_GLITZER) {
+    if (
+        aktiveGlitzer >= MAX_GLITZER
+    ) {
         return;
     }
 
@@ -1011,16 +1066,15 @@ function createExplosionsGlitzer(
     const glitzer =
         document.createElement("div");
 
-
     glitzer.className =
         grosser
         ? "glitzer long"
         : "glitzer";
 
 
-    /* Farbe */
-
-    if (Math.random() < .5) {
+    if (
+        Math.random() < .5
+    ) {
 
         glitzer.style.setProperty(
             "--color",
@@ -1033,17 +1087,13 @@ function createExplosionsGlitzer(
             "--color",
             "#ffe000"
         );
-
     }
 
-
-    /* Größe */
 
     const size =
         grosser
         ? 13 + Math.random() * 8
         : 7 + Math.random() * 7;
-
 
     glitzer.style.setProperty(
         "--size",
@@ -1051,15 +1101,11 @@ function createExplosionsGlitzer(
     );
 
 
-    /* Zufälliger Winkel */
-
     const winkel =
         Math.random() *
         Math.PI *
         2;
 
-
-    /* Entfernung */
 
     const entfernung =
         grosser
@@ -1067,16 +1113,12 @@ function createExplosionsGlitzer(
         : 35 + Math.random() * 70;
 
 
-    /* Start */
-
     const sx =
         (Math.random() - .5) * 6;
 
     const sy =
         (Math.random() - .5) * 6;
 
-
-    /* Mitte */
 
     const mx =
         Math.cos(winkel) *
@@ -1088,8 +1130,6 @@ function createExplosionsGlitzer(
         entfernung *
         .45;
 
-
-    /* Ende */
 
     const ex =
         Math.cos(winkel) *
@@ -1131,12 +1171,9 @@ function createExplosionsGlitzer(
     );
 
 
-    /* Explosionsgeschwindigkeit */
-
     const duration =
         500 +
         Math.random() * 350;
-
 
     glitzer.style.setProperty(
         "--duration",
@@ -1159,13 +1196,16 @@ function createExplosionsGlitzer(
     );
 
 
-    setTimeout(function() {
+    setTimeout(
+        function() {
 
-        glitzer.remove();
+            glitzer.remove();
 
-        aktiveGlitzer--;
+            aktiveGlitzer--;
 
-    }, duration + 60);
+        },
+        duration + 60
+    );
 }
 
 
@@ -1173,9 +1213,14 @@ function createExplosionsGlitzer(
    EXPLOSIONS-STAUB
    ========================================================= */
 
-function createExplosionStaub(x, y) {
+function createExplosionStaub(
+    x,
+    y
+) {
 
-    if (aktiveGlitzer >= MAX_GLITZER) {
+    if (
+        aktiveGlitzer >= MAX_GLITZER
+    ) {
         return;
     }
 
@@ -1183,14 +1228,13 @@ function createExplosionStaub(x, y) {
     const staub =
         document.createElement("div");
 
-
     staub.className =
         "staub";
 
 
-    /* Farbe */
-
-    if (Math.random() < .5) {
+    if (
+        Math.random() < .5
+    ) {
 
         staub.style.setProperty(
             "--color",
@@ -1203,16 +1247,12 @@ function createExplosionStaub(x, y) {
             "--color",
             "#ffe000"
         );
-
     }
 
-
-    /* Größe */
 
     const size =
         3 +
         Math.random() * 4;
-
 
     staub.style.setProperty(
         "--staub-size",
@@ -1220,13 +1260,10 @@ function createExplosionStaub(x, y) {
     );
 
 
-    /* Zufällige Richtung */
-
     const winkel =
         Math.random() *
         Math.PI *
         2;
-
 
     const entfernung =
         35 +
@@ -1260,12 +1297,9 @@ function createExplosionStaub(x, y) {
     );
 
 
-    /* Lebensdauer */
-
     const duration =
         450 +
         Math.random() * 400;
-
 
     staub.style.setProperty(
         "--duration",
@@ -1281,13 +1315,16 @@ function createExplosionStaub(x, y) {
     );
 
 
-    setTimeout(function() {
+    setTimeout(
+        function() {
 
-        staub.remove();
+            staub.remove();
 
-        aktiveGlitzer--;
+            aktiveGlitzer--;
 
-    }, duration + 60);
+        },
+        duration + 60
+    );
 }
 
 </script>
